@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        log_in @user
         format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
@@ -57,6 +58,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def guest_login
+    @user = User.new
+    if current_user
+      redirect_to root_path, alert: "すでにログインしています。"
+    else
+      set_guest_user
+      @user.save
+      log_in @user
+      redirect_to root_path, notice: "ゲストとしてログインしました。"
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -66,5 +79,15 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :password, :password_confirmation)
+    end
+
+    # ゲストユーザーの設定
+    def set_guest_user
+      # ランダムなゲストユーザー名を生成
+      while @user.name.blank? || User.find_by(name: @user.name).present? do
+        @user.name = SecureRandom.base36
+      end
+      # ゲストユーザーカラムをtrueにする
+      @user.guest = true
     end
 end
