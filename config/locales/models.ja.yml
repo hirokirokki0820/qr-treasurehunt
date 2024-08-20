@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      post: イベント
+      item: アイテム
+    attributes:
+      user:
+        id: ID
+        name: アカウント名
+        password: パスワード
+        password_confirmation: パスワード(確認用)
+        created_at: 作成日
+        updated_at: 更新日
+      post:
+        title: イベント名
+      item:
+        name: アイテム名
