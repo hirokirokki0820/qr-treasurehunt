@@ -57,10 +57,20 @@ class PostsController < ApplicationController
     end
   end
 
+  def activation_reset
+    @post ||= Post.find(params[:format])
+    @post.items.each do |item|
+      if !item.activated?
+        item.update_attribute(:activated, true)
+      end
+    end
+    redirect_to @post, notice: "景品の在庫状況がリセットされました。"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post = Post.find(params[:id])
+      @post ||= Post.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

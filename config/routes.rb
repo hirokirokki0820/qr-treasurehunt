@@ -17,9 +17,11 @@ Rails.application.routes.draw do
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
+  get "activation_reset", to: "posts#activation_reset"
   # post "guest", to: "guest_users#create"
   # delete "guest_logout", to "guest_users#destroy"
   resources :users, except: [:new]
-  resources :posts
-  # resources :guest_users
+  resources :posts do
+    resources :items
+  end
 end

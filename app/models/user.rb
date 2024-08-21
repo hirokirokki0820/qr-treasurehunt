@@ -8,17 +8,25 @@ class User < ApplicationRecord
   format: { with: VALID_NAME_REGEX }, if: :require_validation?
 
   # パスワードのバリデーション
-  has_secure_password validations: false
-  validate(if: :require_validation?) do |record|
-    record.errors.add(:password, :blank) unless record.password_digest.present?
-  end
-  validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED, if: :require_validation?
-  validates_confirmation_of :password, allow_blank: true, if: :require_validation?
-  validates :password,
-                      length: { minimum: 6 }, if: :require_validation?
+  has_secure_password #validations: false
+  # validate(if: :require_validation?) do |record|
+  #   record.errors.add(:password, :blank) unless record.password_digest.present?
+  # end
+  # validates_length_of :password, maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED, if: :require_validation?
+  # validates_confirmation_of :password, allow_blank: true, if: :require_validation?
+  validates :password, length: { minimum: 6 }
+  #,if: :require_validation?
 
   private
-    # ゲストユーザーのみバリデーションを解除（Name, Password）
+    # ゲストユーザーの作成
+    def self.guest_login
+      random_pass = SecureRandom.base36
+      create!(name: "ゲストユーザー",
+              password: random_pass,
+              guest: true)
+    end
+
+    # ゲストユーザーのみバリデーションを解除（name）
     def require_validation?
       return true if self.guest == false || self.guest == 0
       false

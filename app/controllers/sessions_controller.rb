@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(name: session_params[:name])
     if @user && @user.authenticate(session_params[:password])
       log_in @user
-      flash[:notice] = "こんにちは、#{@user.name}さん"
+      flash[:notice] = "ログインしました。"
       redirect_to @user
     else
       @user = User.new(session_params)

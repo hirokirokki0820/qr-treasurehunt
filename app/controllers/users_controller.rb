@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :require_verified_account, only: %i[ edit update destroy ]
+  before_action :require_same_user, only: %i[ edit update destroy ]
 
   # GET /users or /users.json
   def index
@@ -50,14 +52,10 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    if @user.guest == true || @user.guest == 1
-      redirect_to root_path, alert: "ゲストアカウントは削除できません。"
-    else
-      @user.destroy
-      respond_to do |format|
-        format.html { redirect_to users_url, notice: "アカウントが削除されました。" }
-        format.json { head :no_content }
-      end
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "User was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
@@ -65,7 +63,7 @@ class UsersController < ApplicationController
     if current_user
       redirect_to current_user, alert: "すでにログインしています。"
     else
-      user = User.create!(name: "Guest", guest: true)
+      user = User.guest_login
       log_in user
       redirect_to user, notice: "ゲストとしてログインしました。"
     end
@@ -82,13 +80,18 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :password, :password_confirmation)
     end
 
-    # ゲストユーザーの設定
-    # def set_guest_user
-    #   # ランダムなゲストユーザー名を生成
-    #   while @user.name.blank? || User.find_by(name: @user.name).present? do
-    #     @user.name = SecureRandom.base36
-    #   end
-    #   # ゲストユーザーカラムをtrueにする
-    #   @user.guest = true
-    # end
+    # ゲストユーザーに対する制限(編集・削除の禁止)
+    def require_verified_account
+      if @user.guest == true || @user.guest == 1
+        redirect_to @user, alert: "ゲストアカウントの編集・削除はできません。"
+      end
+    end
+
+    def require_same_user
+      if current_user != @user
+        flash[:alert] = "ご自身以外のアカウントの閲覧・編集はできません。"
+        redirect_to @user
+      end
+    end
+
 end
