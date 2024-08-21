@@ -1,0 +1,65 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  padding-top: 55px;
+}
+
+/****** ハンバーガーメニューのスタイリング ******/
+.navbar-toggler{
+  border: none !important;
+
+  // background-color: skyblue;
+  // border-width: 2px;
+
+  // ハンバーガーメニューの周りに表示される枠線を消す
+  &:focus {
+    box-shadow:none !important;
+   }
+
+  // ハンバーガーメニューの３本線のスタイリング
+  .navbar-toggler-icon{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='3' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+}
+
+/****** トップページのボタン　******/
+// トップページボタン（ベーシック）
+.btn-top{
+  margin: 0 auto;
+  font-size: 20px;
+  text-decoration: initial;
+  color: white;
+  font-weight: bold;
+  background-color: #888;
+  display: inline-block;
+  text-align: center;
+  height: 80px;
+  line-height: 80px;
+  width: 80%;
+  box-shadow: 0 3px 0 0 #555;
+  transition:0.2s all;
+  &:hover{
+    text-decoration: initial;
+    color: white;
+    background-color: #555;
+    -webkit-transform: translateX(3px);
+    transform: translateX(3px);
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    box-shadow: none;
+
+  }
+}
+// トップページボタン（グリーン）
+.btn-top__green{
+  box-shadow:0 3px 0 0 #005400;
+
+  background: #0ba500; /* Old browsers */
+  background: -moz-linear-gradient(top,  #0ba500 0%, #008000 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #0ba500 0%,#008000 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #0ba500 0%,#008000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0ba500', endColorstr='#008000',GradientType=0 ); /* IE6-9 */
+}

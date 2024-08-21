@@ -1,0 +1,16 @@
+/* タブレット用カスタムCSS */
+@include media-breakpoint-down(lg) {
+
+
+
+}
+
+/* スマホ用カスタムCSS */
+@include media-breakpoint-down(sm) {
+
+  //入力フォームの幅
+  .btn-top{
+    width: 90%;
+  }
+
+}

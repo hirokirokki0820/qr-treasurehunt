@@ -1,13 +1,12 @@
 <h1>トップページ</h1>
-<div class="mb-3">
-<%= link_to "新規アカウント作成", signup_path %>
-</div>
-<div class="mb-3">
-<%= link_to "ログイン", login_path %>
-</div>
-<div class="mb-3">
-<%= link_to "ログアウト", logout_path, data: { turbo_method: :delete, turbo_confirm: "本当にログアウトしますか？" } %>
-</div>
-<div class="mb-3">
-<%= link_to "ゲストユーザーとしてログイン", guest_path %>
-</div>
+<% if !logged_in? %>
+  <div class="mb-3">
+  <%= link_to "主催者用アカウントの作成", signup_path %>
+  </div>
+  <div class="mb-3">
+  <%= link_to "ログインする", login_path %>
+  </div>
+  <div class="mb-3">
+  <%= link_to "ゲストユーザーとして利用する", guest_path %>
+  </div>
+<% end %>

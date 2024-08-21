@@ -3,7 +3,9 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
 
   # ユーザー名のバリデーション
-  validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 }, if: :require_validation?
+  VALID_NAME_REGEX = /\A[a-zA-Z0-9]+\z/ # 半角アルファベット(大文字・小文字・数値)のみ
+  validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { maximum: 30 },
+  format: { with: VALID_NAME_REGEX }, if: :require_validation?
 
   # パスワードのバリデーション
   has_secure_password validations: false

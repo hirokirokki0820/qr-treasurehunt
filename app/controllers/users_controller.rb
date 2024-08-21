@@ -50,23 +50,24 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+    if @user.guest == true || @user.guest == 1
+      redirect_to root_path, alert: "ゲストアカウントは削除できません。"
+    else
+      @user.destroy
+      respond_to do |format|
+        format.html { redirect_to users_url, notice: "アカウントが削除されました。" }
+        format.json { head :no_content }
+      end
     end
   end
 
   def guest_login
-    @user = User.new
     if current_user
-      redirect_to root_path, alert: "すでにログインしています。"
+      redirect_to current_user, alert: "すでにログインしています。"
     else
-      set_guest_user
-      @user.save
-      log_in @user
-      redirect_to root_path, notice: "ゲストとしてログインしました。"
+      user = User.create!(name: "Guest", guest: true)
+      log_in user
+      redirect_to user, notice: "ゲストとしてログインしました。"
     end
   end
 
@@ -82,12 +83,12 @@ class UsersController < ApplicationController
     end
 
     # ゲストユーザーの設定
-    def set_guest_user
-      # ランダムなゲストユーザー名を生成
-      while @user.name.blank? || User.find_by(name: @user.name).present? do
-        @user.name = SecureRandom.base36
-      end
-      # ゲストユーザーカラムをtrueにする
-      @user.guest = true
-    end
+    # def set_guest_user
+    #   # ランダムなゲストユーザー名を生成
+    #   while @user.name.blank? || User.find_by(name: @user.name).present? do
+    #     @user.name = SecureRandom.base36
+    #   end
+    #   # ゲストユーザーカラムをtrueにする
+    #   @user.guest = true
+    # end
 end

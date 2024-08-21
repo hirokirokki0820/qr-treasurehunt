@@ -1,0 +1,56 @@
+<!-- ナビゲーションメニュー -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <%= link_to "Sample App", (logged_in? ? current_user : root_path), class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <% if logged_in? %>
+          <li class="nav-item">
+            <%= link_to "新規イベント", new_post_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "ユーザー", user_path(current_user), class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "ゲストログイン用QRコード", guest_login_path, class: "nav-link" %>
+          </li>
+          <!-- ログアウトボタン（モーダル表示） -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">ログアウト</a>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "主催者アカウント作成", signup_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "ゲストログイン用QRコード", guest_login_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "主催者ログイン", login_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">確認</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        本当にログアウトしますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        <%= button_to "ログアウト", logout_path, class: "btn btn-primary", method: :delete %>
+      </div>
+    </div>
+  </div>
+</div>

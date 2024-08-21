@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
 
   def top
-    # if current_user
-    #   redirect_to current_user
-    # end
+    if current_user
+      redirect_to current_user
+    end
   end
 
   def index
