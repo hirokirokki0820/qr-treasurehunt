@@ -14,8 +14,12 @@
 >> <%= link_to "アイテムを追加する", new_post_item_path(@post) %>
 </div>
 
+<div class="mb-3">
+>> <%= link_to "QRコードを表示・印刷する", show_qrcodes_post_path(@post) %>
+</div>
+
 <div class="mb-5">
->> <%= link_to "無効化をリセットする", activation_reset_path(@post) %>
+<%= link_to "景品の取得をリセットする", activation_reset_post_path(@post) %>
 </div>
 
 <div>

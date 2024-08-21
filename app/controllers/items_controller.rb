@@ -1,7 +1,10 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[ show edit update destroy ]
+  before_action :set_item, only: %i[ show edit update destroy activate_item ]
   before_action :set_post
-  after_action :item_activation, only: %i[ show ]
+  before_action :require_same_user, only: %i[ edit update destroy ]
+  after_action :item_activation, only: %i[ activate_item ]
+  before_action :require_user, only: %i[ index ]
+  before_action :items_index, only: %i[ show activate_item ]
 
   # GET /items or /items.json
   def index
@@ -25,59 +28,69 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     @item.post = @post
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to @item.post, notice: "Item was successfully created." }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.activated? && @item.lose == true
+      @item.update_attribute(:activated, false)
+    end
+    if @item.save
+      redirect_to @item.post, notice: "Item was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /items/1 or /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @item.post, notice: "Item was successfully updated." }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.update(item_params)
+      redirect_to @item.post, notice: "Item was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /items/1 or /items/1.json
   def destroy
     @item.destroy!
+    redirect_to post_path(@post), notice: "Item was successfully destroyed."
+  end
 
-    respond_to do |format|
-      format.html { redirect_to items_url, notice: "Item was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  def activate_item
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
-      @post ||= Post.find(params[:post_id])
+      @post = Post.find(params[:post_id])
     end
 
     def set_item
-      @item ||= Item.find(params[:id])
+      @item = Item.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def item_params
-      params.require(:item).permit(:name, :activated)
+      params.require(:item).permit(:name, :activated, :lose)
     end
 
     # 一度アクセスしたらitemを無効化する
     def item_activation
       if @item.activated?
         @item.update_attribute(:activated, false)
+      end
+    end
+
+    def require_same_user
+      if current_user != @item.post.user
+        flash[:alert] = "ご自身以外のアカウントの閲覧・編集はできません"
+        redirect_to root_path
+      end
+    end
+
+    # 景品No. を返す
+    def items_index
+      @post.items.each_with_index do |item, index|
+        if item.id == @item.id
+          @index = index + 1
+        end
       end
     end
 end

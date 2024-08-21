@@ -1,0 +1,22 @@
+<div class="mb-5 text-center">
+  <% if @item.activated? %>
+    <p>🎉おめでとうございます！！🎉</p>
+    <div class="mb-3">
+      <p class="fw-bold">景品 No.<%= @index %></p>
+      <h3 class="fw-bold"><%= @item.name %></h3>
+    </div>
+    <p>をゲットしました！！</p>
+    <p>当画面を提示して景品と交換してください。</p>
+    <p class="text-danger" style="font-size: 0.8em;">※ページを更新すると当チケットは無効になります。景品交換までは画面をのままにするか、スクショ保存しておくことをおすすめします。</p>
+    <%= link_to "スクリーンショットを保存する", edit_post_item_path(@item.post_id, @item.id), class: "btn__basic__large btn__green" %>
+  <% else %>
+    <h3>残念！！</h3>
+    <p>景品はすでに獲得されました。</p>
+  <% end %>
+</div>
+
+<div>
+  <%= link_to "Edit this item", edit_post_item_path(@item.post_id, @item.id) %> |
+  <%#= link_to "Back to items", post_items_path %>
+  <%= button_to "Destroy this item", post_item_path(@item.post_id, @item.id) , method: :delete %>
+</div>

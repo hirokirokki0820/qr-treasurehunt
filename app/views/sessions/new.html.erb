@@ -1,13 +1,13 @@
 <h1>ログイン</h1>
 <%= form_with(scope: :session, model: @user, url: login_path, local: true) do |f| %>
   <div>
-    <%= f.label "ユーザー名"%>
-    <%= f.text_field :name, placeholder: "ユーザー名を入力してください"%>
+    <%= f.label "ユーザー名", style: "display: block" %>
+    <%= f.text_field :name %>
   </div>
 
   <div>
-    <%= f.label "パスワード"%>
-    <%= f.password_field :password, placeholder: "パスワードを入力してください" %>
+    <%= f.label "パスワード", style: "display: block" %>
+    <%= f.password_field :password %>
   </div>
 
   <div>

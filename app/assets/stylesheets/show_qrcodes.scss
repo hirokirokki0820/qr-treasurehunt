@@ -1,0 +1,24 @@
+@page {
+  size: A4 portrait;
+  margin: 5mm;
+}
+
+@media print{
+	.no_print{
+		display: none;
+	}
+
+  body {
+    // -webkit-print-color-adjust: exact; /* 印刷時でも背景色や背景画像を表示 */
+    width: 900px; /* 印刷時の全ページ幅を統一（px数値はお好みで） */
+    zoom: 0.8; /* なるべく多くのブラウザで切れないようにするため */
+  }
+
+  .page{
+    page-break-after: always;
+  }
+  .page:last-child{
+    page-break-after: auto;
+  }
+
+}

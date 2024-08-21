@@ -1,12 +1,12 @@
 <h1>トップページ</h1>
 <% if !logged_in? %>
   <div class="mb-3">
-  <%= link_to "主催者用アカウントの作成", signup_path %>
+  <%= link_to "主催者用アカウントの作成", signup_path, class: "btn__basic__large btn__green mb-3" %>
   </div>
   <div class="mb-3">
-  <%= link_to "ログインする", login_path %>
+  <%= link_to "ログインする", login_path, class: "btn__basic__large btn__green mb-3" %>
   </div>
   <div class="mb-3">
-  <%= link_to "ゲストユーザーとして利用する", guest_path %>
+  <%= link_to "ゲストユーザーとして利用する", guest_path, class: "btn__basic__large" %>
   </div>
 <% end %>

@@ -1,15 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
-<% if @item.activated? %>
-  <p>おめでとうございます！！</p>
-  <div class="mb-3">
-    <h3>景品名：<%= @item.name %></h3>
-  </div>
-  <p>をゲットしました！！</p>
-<% else %>
-  <h3>残念！！</h3>
-  <p>景品はすでに獲得されました。</p>
-<% end %>
+<div class="mb-5">
+  <% if @item.lose == true %>
+    <h3>残念！！</h3>
+    <p>ハズレです。</p>
+  <% else %>
+    <% if @item.activated? %>
+      <div class="mb-3">
+        <p>景品 No.<%= @index %></p>
+        <h3 class="fw-bold">景品名：<%= @item.name %></h3>
+      </div>
+      <%= link_to "景品交換チケットを表示する", activate_item_post_item_path(@item.post_id, @item.id), class: "btn__basic__large btn__green" %>
+    <% else %>
+      <h3>残念！！</h3>
+      <p>景品はすでに獲得されました。</p>
+    <% end %>
+  <% end %>
+</div>
 
 <div>
   <%= link_to "Edit this item", edit_post_item_path(@item.post_id, @item.id) %> |

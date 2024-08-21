@@ -19,9 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    if !logged_in?
-      flash[:alert] = "ログインしてください。"
-    end
+    redirect_to(logged_in? ? current_user : root_path)
   end
 
   def log_out

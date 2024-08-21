@@ -25,9 +25,9 @@ body {
   }
 }
 
-/****** トップページのボタン　******/
-// トップページボタン（ベーシック）
-.btn-top{
+/****** ボタンデザイン（Large） ******/
+// Largeボタン（ベーシック）
+.btn__basic__large{
   margin: 0 auto;
   font-size: 20px;
   text-decoration: initial;
@@ -53,8 +53,9 @@ body {
 
   }
 }
-// トップページボタン（グリーン）
-.btn-top__green{
+
+// ボタンの配色（グリーン）
+.btn__green{
   box-shadow:0 3px 0 0 #005400;
 
   background: #0ba500; /* Old browsers */

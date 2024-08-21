@@ -17,11 +17,17 @@ Rails.application.routes.draw do
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
-  get "activation_reset", to: "posts#activation_reset"
-  # post "guest", to: "guest_users#create"
-  # delete "guest_logout", to "guest_users#destroy"
   resources :users, except: [:new]
   resources :posts do
     resources :items
+    member do
+      get "show_qrcodes"
+      get "activation_reset"
+    end
+    resources :items do
+      member do
+        get "activate_item"
+      end
+    end
   end
 end
