@@ -83,8 +83,10 @@ class ItemsController < ApplicationController
 
     # item_got_userカラムに景品取得したユーザーIDを代入する
     def set_item_got_user
-      if @item.item_got_user.nil? && !@item.lose?
-        @item.update_attribute(:item_got_user, current_user.id)
+      if logged_in?
+        if @item.item_got_user.nil? && !@item.lose?
+          @item.update_attribute(:item_got_user, current_user.id)
+        end
       end
     end
 

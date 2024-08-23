@@ -1,29 +1,29 @@
 <%= form_with(model: [@post, @item], local: true, id: "itemForm") do |f| %>
-  <% if item.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
-
-      <ul>
-        <% item.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="mb-2">
-    <%= f.label :name, style: "display: block" %>
-    <%= f.text_field :name, id: "itemName" %>
+  <div class="mb-3 col-8 <%= @item.errors.include?(:name) ? "validation_errors" : "" %>">
+    <%= icon("pencil-fill") %> <%= f.label "アイテム名", for: "postName", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", id: "itemName" %>
+    <%= render 'layouts/error_messages',class: "invalid-feedback", obj: @item, key: :name %>
   </div>
 
-  <div class="form-check mb-3">
+  <div class="form-check mb-4">
     <%= f.check_box :lose, class: "form-check-input", id: "itemLoseCheck" ,as: :boolean %>
     <%= f.label "ハズレを設定する", class: "form-check-label", for: "itemLoseCheck" %>
     </label>
   </div>
 
-  <div>
-    <%= f.submit class: "btn btn-primary mb-2" %>
+  <div class="mb-3 col-8">
+    <%= f.submit class: "btn__basic__m btn__green" %>
+  </div>
+  <div class="mb-5 col-8">
+    <%= link_to "キャンセル", @post, class: "btn__basic__m" %>
+  </div>
+<% end %>
+
+<!-- アイテム編集時に「削除ボタン」を表示する  -->
+<% if !@item.new_record? %>
+  <hr>
+  <div class="mb-5">
+    <%= link_to icon_with_text("trash", "アイテムを削除する"), post_item_path(@item.post_id, @item.id), class: "btn btn-danger", data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？"} %>
   </div>
 <% end %>
 

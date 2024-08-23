@@ -2,12 +2,8 @@
 
 <%= render "form", user: @user %>
 
-<div class="mt-2">
-  <%= link_to "キャンセル", current_user, class: "btn btn-secondary" %>
-</div>
+<hr>
 
-<hr class="mt-5">
-
-<div class="text-center">
+<div class="mb-5">
   <%= link_to icon_with_text("trash", "アカウントを削除する"), @user, class: "btn__basic__l btn__red", data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？"} %>
 </div>

@@ -1,0 +1,5 @@
+<% if obj.errors.include?(key) %>
+    <% obj.errors.full_messages_for(key).each do |error| %>
+      <li style="list-style:none" class="text-danger fw-bold validation_font_size"><i class="bi bi-exclamation-circle"></i> <%= error %></li>
+    <% end %>
+<% end %>

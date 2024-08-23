@@ -1,22 +1,22 @@
-<%= form_with(model: post) do |f| %>
-  <% if post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-        <% post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="mb-3">
-    <%= f.label :title, style: "display: block" %>
-    <%= f.text_field :title %>
+<%= form_with(model: post, local:true, id: "postForm") do |f| %>
+  <div class="mb-5 col-8 <%= post.errors.include?(:title) ? "validation_errors" : "" %>">
+    <%= icon("pencil-fill") %> <%= f.label "イベント名", for: "postName", class: "form-label" %>
+    <%= f.text_field :title, class: "form-control", id: "postName"%>
+    <%= render 'layouts/error_messages',class: "invalid-feedback", obj: post, key: :title %>
   </div>
 
-  <div class="mb-2">
-    <%= f.submit class: "btn btn-primary" %>
+  <div class="mb-3 col-8">
+    <%= f.submit class: "btn__basic__m btn__green" %>
+  </div>
+  <div class="mb-5 col-8">
+    <%= link_to "キャンセル", current_user, class: "btn__basic__m" %>
+  </div>
+<% end %>
+
+<!-- イベント編集時に「削除ボタン」を表示する  -->
+<% if !@post.new_record? %>
+  <hr class="mt-5">
+  <div class="mb-5">
+    <%= link_to icon_with_text("trash", "イベントを削除する"), @post, class: "btn btn-danger", data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？"} %>
   </div>
 <% end %>
