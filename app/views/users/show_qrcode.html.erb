@@ -1,0 +1,14 @@
+<div class="no_print mb-3">
+  <%= link_to icon_with_text("box-arrow-in-left", "マイページに戻る"), current_user %>
+</div>
+<div class="no_print text-center">
+  <a href="javascript:void(0)" class="btn__basic__l btn__green d-block mb-3" onclick="window.print();return false;"><%= icon_with_text("qr-code", "QRコードを印刷する") %></a>
+  <p class="fw-bold text-danger">※倍率など細かな調整は印刷ダイアログにて行ってください。</p>
+</div>
+
+<div class="page text-center py-5" style="border: 1px solid #ccc">
+  <h2 class="mb-3">参加者ログイン用QRコード</h2>
+  <div class="p-3">
+    <%= qrcode guest_login_path, 10 %>
+  </div>
+</div>
