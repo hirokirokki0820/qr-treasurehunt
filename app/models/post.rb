@@ -5,6 +5,11 @@ class Post < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 100}
 
+  # ransack のホワイトリスト登録メソッド
+  def self.ransackable_attributes(auth_object = nil)
+    ["item"]
+  end
+
   private
   def set_post_id
     while self.id.blank? || User.find_by(id: self.id).present? do

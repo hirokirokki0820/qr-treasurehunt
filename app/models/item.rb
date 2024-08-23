@@ -4,6 +4,11 @@ class Item < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 50 }
 
+  # ransack のホワイトリスト登録メソッド
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "item_got_user"]
+  end
+
   private
     # item用のidを生成
     def set_item_id

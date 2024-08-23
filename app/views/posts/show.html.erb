@@ -16,7 +16,7 @@
     <%= search_form_for @search, url: post_path(@post) do |f| %>
       <div class="row g3 mb-3">
         <div class="col-4 col-xl-2">
-          <%= f.label :name_cont, "アイテム名", class: "form-label fw-bold" %>
+          <%= f.label :name_cont, "景品名", class: "form-label fw-bold" %>
           <%= f.search_field :name_cont, class: "form-control" %>
         </div>
         <div class="col-4 col-xl-2">
@@ -122,7 +122,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-        <%= link_to "リセット", activation_reset_post_path(@post), class: "btn btn-danger" %>
+        <%= link_to "リセット", activation_reset_all_post_path(@post), class: "btn btn-danger" %>
       </div>
     </div>
   </div>
