@@ -1,18 +1,20 @@
 <div class="mb-5 text-center">
-  <% if @item.activated? %>
+  <%# if @item.activated? %>
     <p>🎉おめでとうございます！！🎉</p>
     <div class="mb-3">
       <p class="fw-bold">景品 No.<%= @index %></p>
-      <h3 class="fw-bold"><%= @item.name %></h3>
+      <h3 class="fw-bold item__name__gold"><%= @item.name %></h3>
     </div>
-    <p>をゲットしました！！</p>
+    <p>が当たりました！！</p>
     <p>当画面を提示して景品と交換してください。</p>
-    <p class="text-danger" style="font-size: 0.8em;">※ページを更新すると当チケットは無効になります。景品交換までは画面をのままにするか、スクショ保存しておくことをおすすめします。</p>
-    <%= link_to "スクリーンショットを保存する", edit_post_item_path(@item.post_id, @item.id), class: "btn__basic__large btn__green" %>
-  <% else %>
-    <h3>残念！！</h3>
+    <p class="text-danger" style="font-size: 0.8em;">※景品交換までは画面をそのままにするか、スクショ保存しておくことをおすすめします。</p>
+    <%= link_to icon_with_text("download", "スクリーンショットを保存する"), edit_post_item_path(@item.post_id, @item.id), class: "btn__basic__l btn__green" %>
+  <%# else %>
+  <!--
+    <h3>😭残念！！😭</h3>
     <p>景品はすでに獲得されました。</p>
-  <% end %>
+        -->
+  <%# end %>
 </div>
 
 <div>

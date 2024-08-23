@@ -2,8 +2,9 @@ class ItemsController < ApplicationController
   before_action :set_item, only: %i[ show edit update destroy activate_item ]
   before_action :set_post
   before_action :require_same_user, only: %i[ edit update destroy ]
-  after_action :item_activation, only: %i[ activate_item ]
-  before_action :require_user, only: %i[ index ]
+  before_action :set_item_got_user, only: %i[ show ]
+  # after_action :item_deactivate, only: %i[ show ]
+  before_action :require_user, only: %i[ index show ]
   before_action :items_index, only: %i[ show activate_item ]
 
   # GET /items or /items.json
@@ -71,8 +72,24 @@ class ItemsController < ApplicationController
       params.require(:item).permit(:name, :activated, :lose)
     end
 
-    # 一度アクセスしたらitemを無効化する
-    def item_activation
+    # 景品No. を返す
+    def items_index
+      @post.items.each_with_index do |item, index|
+        if item.id == @item.id
+          @index = index + 1
+        end
+      end
+    end
+
+    # item_got_userカラムに景品取得したユーザーIDを代入する
+    def set_item_got_user
+      if @item.item_got_user.nil? && !@item.lose?
+        @item.update_attribute(:item_got_user, current_user.id)
+      end
+    end
+
+    # 一度アクセスしたら activated を無効化する
+    def item_deactivate
       if @item.activated?
         @item.update_attribute(:activated, false)
       end
@@ -82,15 +99,6 @@ class ItemsController < ApplicationController
       if current_user != @item.post.user
         flash[:alert] = "ご自身以外のアカウントの閲覧・編集はできません"
         redirect_to root_path
-      end
-    end
-
-    # 景品No. を返す
-    def items_index
-      @post.items.each_with_index do |item, index|
-        if item.id == @item.id
-          @index = index + 1
-        end
       end
     end
 end

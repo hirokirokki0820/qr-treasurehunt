@@ -56,8 +56,8 @@ class PostsController < ApplicationController
   # 全ての景品の取得状態をリセットする
   def activation_reset_all
     @post.items.each do |item|
-      if !item.activated? && !item.lose?
-        item.update_attribute(:activated, true)
+      if item.item_got_user? && !item.lose?
+        item.update_attribute(:item_got_user, nil)
       end
     end
     redirect_to @post, notice: "景品の在庫状況がリセットされました。"

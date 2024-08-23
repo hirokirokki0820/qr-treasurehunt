@@ -19,7 +19,9 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    redirect_to(logged_in? ? current_user : root_path)
+    if !logged_in?
+      redirect_to root_path
+    end
   end
 
   def log_out

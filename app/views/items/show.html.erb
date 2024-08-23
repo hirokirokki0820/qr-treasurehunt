@@ -1,25 +1,50 @@
-<p style="color: green"><%= notice %></p>
-
-<div class="mb-5">
+<div class="mb-5 text-center">
   <% if @item.lose == true %>
-    <h3>残念！！</h3>
-    <p>ハズレです。</p>
+    <div class="item__lose">
+      <h3 class="m-5">😭残念！！ハズレです。</h3>
+    </div>
   <% else %>
-    <% if @item.activated? %>
-      <div class="mb-3">
-        <p>景品 No.<%= @index %></p>
-        <h3 class="fw-bold">景品名：<%= @item.name %></h3>
+    <% if @item.item_got_user != current_user.id %>
+      <div class="item__lose">
+        <div class="m-5">
+          <h3>😭残念！！</h3>
+          <p>景品はすでに獲得されました。</p>
+        </div>
       </div>
-      <%= link_to "景品交換チケットを表示する", activate_item_post_item_path(@item.post_id, @item.id), class: "btn__basic__large btn__green" %>
     <% else %>
-      <h3>残念！！</h3>
-      <p>景品はすでに獲得されました。</p>
+      <p>🎉おめでとうございます！！🎉</p>
+      <div class="mb-3">
+        <p class="fw-bold">景品 No.<%= @index %></p>
+        <h3 class="fw-bold item__name__gold"><%= @item.name %></h3>
+      </div>
+      <p>が当たりました！！</p>
+      <p>当画面を提示して景品と交換してください。</p>
+      <p class="text-danger" style="font-size: 0.8em;">※<b style="border-bottom: 1px solid red">画面を更新するとリンクが無効になります</b>。景品交換までは画面をそのままにするか、スクショ保存しておくことをおすすめします。</p>
+      <%= link_to icon_with_text("download", "スクリーンショットを保存する"), edit_post_item_path(@item.post_id, @item.id), class: "btn__basic__l btn__green" %>
     <% end %>
   <% end %>
 </div>
 
-<div>
-  <%= link_to "Edit this item", edit_post_item_path(@item.post_id, @item.id) %> |
-  <%#= link_to "Back to items", post_items_path %>
-  <%= button_to "Destroy this item", post_item_path(@item.post_id, @item.id) , method: :delete %>
+<!--
+<div class="mb-5 text-center">
+  <% if @item.lose == true %>
+    <div class="item__lose">
+      <h3 class="m-5">😭残念！！ハズレです。</h3>
+    </div>
+  <% else %>
+    <% if @item.activated? %>
+      <div class="mb-3">
+        <h3 class="fw-bold">景品 No.<%= @index %></h3>
+      </div>
+      <%#= link_to "景品交換チケットを表示する", activate_item_post_item_path(@item.post_id, @item.id, activation_id: @item.activation_id), class: "btn__basic__l btn__green" %>
+    <% else %>
+      <div class="item__lose">
+        <div class="m-5">
+          <h3>😭残念！！</h3>
+          <p>景品はすでに獲得されました。</p>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>
+-->

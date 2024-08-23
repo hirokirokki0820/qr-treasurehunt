@@ -1,7 +1,6 @@
 <% if !logged_in? %>
-  <div class="d-grid gap-2 my-5">
-    <%= link_to "参加する (ゲストとしてログイン)", guest_login_path, class: "btn__basic__l btn__w80 btn__green mb-3" %>
-
-    <%= link_to "イベントを作成する", host_user_path, class: "btn__basic__l btn__w80 bg-primary" %>
+  <div class="d-grid gap-2 mt-5">
+    <%= link_to "参加者はこちら", guest_login_path, class: "btn__basic__l btn__green mb-3" %>
+    <%= link_to "イベント主催者はこちら", host_user_path, class: "btn__basic__l bg-primary" %>
   </div>
 <% end %>

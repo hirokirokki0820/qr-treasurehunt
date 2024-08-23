@@ -31,9 +31,9 @@ label.required:after{
   }
 }
 
-/****** ボタンデザイン（Large） ******/
+/****** ボタンデザイン（Large, Medium） ******/
 // Largeボタン（ベーシック）
-.btn__basic__large{
+.btn__basic__l{
   margin: 0 auto;
   font-size: 20px;
   text-decoration: initial;
@@ -45,6 +45,35 @@ label.required:after{
   height: 80px;
   line-height: 80px;
   width: 80%;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 0 #555;
+  transition:0.2s all;
+  &:hover{
+    text-decoration: initial;
+    color: white;
+    background-color: #555;
+    -webkit-transform: translateX(3px);
+    transform: translateX(3px);
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+    box-shadow: none;
+
+  }
+}
+
+// mediumボタン（ベーシック）
+.btn__basic__m{
+  margin: 0 auto;
+  text-decoration: initial;
+  color: white;
+  font-weight: bold;
+  background-color: #888;
+  display: inline-block;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  border-radius: 10px;
   box-shadow: 0 3px 0 0 #555;
   transition:0.2s all;
   &:hover{
@@ -78,4 +107,73 @@ label.required:after{
   background: -moz-linear-gradient(top,  #EE6E73 0%, #ff5c61 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top,  #EE6E73 0%,#ff5c61 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom,  #EE6E73 0%,#ff5c61 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+/****** 見出しのデザイン ******/
+// @item.name(景品名)の見出しデザイン（高級感のある見出し）
+.item__name__gold{
+  font-family: 'ヒラギノ明朝 Pro W3', 'Hiragino Mincho Pro', 'Hiragino Mincho ProN', 'HGS明朝E', 'ＭＳ Ｐ明朝', serif;
+  position: relative;
+  padding: 1.5rem 2rem;
+  -webkit-box-shadow: 0 2px 14px rgba(0, 0, 0, .2);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, .2);
+
+  &:before,
+  &:after{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    content: '';
+    background-image: -webkit-linear-gradient(315deg, #704308 0%, #ffce08 40%, #e1ce08 60%, #704308 100%);
+    background-image: linear-gradient(135deg, #704308 0%, #ffce08 40%, #e1ce08 60%, #704308 100%);
+  }
+
+  &:before{
+    top: 0;
+  }
+
+  &:after{
+    bottom: 0;
+  }
+
+}
+
+// @item.nameの見出しデザイン（メタル風）
+.item__name__metal{
+  padding: 1rem 2rem;
+  border-top: 4px solid #d8dcdc;
+  border-right: 4px solid #666;
+  border-bottom: 4px solid #333;
+  border-left: 4px solid #868888;
+  border-radius: 0;
+  background-image: -webkit-linear-gradient(135deg, #ccc 0%, #868888 20%, #d8dcdc 34%, white 53%, #ccc 100%);
+  background-image: linear-gradient(-45deg, #ccc 0%, #868888 20%, #d8dcdc 34%, white 53%, #ccc 100%);
+}
+
+// ハズレ用の見出しスタイル
+.item__lose{
+  border: 3px solid red;
+}
+
+/****** カメラ起動ボタンのデザイン ******/
+#camera__start {
+
+  label {
+    // display: block;
+    // width: 320px;
+    // margin: 0 auto;
+    // padding: 10px 0;
+    // text-align: center;
+    // border: 0;
+    // box-shadow: none;
+    // color: #ffffff;
+    // font-size: 1rem;
+    // background-color: #00c2bc;
+    // cursor: pointer;
+  }
+
+  input {
+    display: none;
+  }
 }

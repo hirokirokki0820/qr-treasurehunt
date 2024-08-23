@@ -1,0 +1,6 @@
+<% if !logged_in? %>
+  <div class="d-grid gap-2 mt-5">
+    <%= link_to "新規アカウント作成", signup_path, class: "btn__basic__l bg-primary mb-3" %>
+    <%= link_to "ログインする", login_path, class: "btn__basic__l mb-3" %>
+  </div>
+<% end %>

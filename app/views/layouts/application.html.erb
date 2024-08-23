@@ -24,8 +24,10 @@
         <%= render 'layouts/flash_messages' %>
         <%= yield %>
         <% if Rails.env.development? %>
-        <br><%= debug(params) %><br>
-            セッションID => <%= session[:user_id] %>
+          <div class="my-3">
+            <p><%= debug(params) %></p>
+            <p>セッションID => <%= session[:user_id] %></p>
+          </div>
         <% end %>
       </div>
     </div>
