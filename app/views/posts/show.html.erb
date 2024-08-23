@@ -6,10 +6,39 @@
   <h2><%= @post.title %></h2>
 </div>
 
-<!-- 一覧 -->
+<!-- 検索フォーム -->
+<div class="card shadow mt-3">
+  <div class="card-header">
+    <%= icon_with_text("search", "検索条件") %>
+  </div>
+
+  <div class="card-body">
+    <%= search_form_for @search, url: post_path(@post) do |f| %>
+      <div class="row g3 mb-3">
+        <div class="col-4 col-xl-2">
+          <%= f.label :name_cont, "アイテム名", class: "form-label fw-bold" %>
+          <%= f.search_field :name_cont, class: "form-control" %>
+        </div>
+        <div class="col-4 col-xl-2">
+          <%= f.label :item_got_user_present, "在庫", class: "form-label fw-bold" %>
+          <%= f.select :item_got_user_present, [['あり ◯', false], ['なし x', true]],
+ {include_blank: '選択なし'}, class: 'form-select' %>
+
+        </div>
+        <div class="col-4 d-flex align-items-end">
+          <%= button_tag(icon_with_text("search", "検索"), class: "btn btn-primary me-1") %>
+          <%= link_to "リセット", post_path(@post), class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- アイテム一覧 -->
 <div class="card shadow mt-3 mb-5">
   <div class="card-header">
-    <%= icon_with_text("table", "一覧") %>
+    <%= icon_with_text("table", "アイテム一覧") %>
+    (累計: <span class="fw-bold text-danger"><%= @post.items.count %></span>, ハズレ数: <span class="fw-bold text-danger"><%= @post.items.where(lose: true).count %></span>)
   </div>
 
   <div class="card-body mx-3">
@@ -18,20 +47,17 @@
                     class: "btn__basic__m btn__green mb-3 mt-1"
     %>
     <div class="text-center">
-      <%#= link_to icon_with_text("plus-circle", "アイテムを追加"),
-                    new_post_item_path(@post),
-                    class: "btn__basic__l btn__green mb-2"
-    %>
+
     </div>
     <div class="row py-2">
       <div class="col-2 mt-auto fw-bold">
         No.
       </div>
       <div class="col-5 mt-auto fw-bold">
-        景品名
+        <%= sort_link(@search, :name, hide_indicator: true) %>
       </div>
       <div class="col-3 mt-auto fw-bold">
-        状況
+        <%= sort_link(@search, :item_got_user, "在庫状況", hide_indicator: true) %>
       </div>
       <div class="col-2 d-flex justify-content-end">
 
@@ -39,27 +65,31 @@
       <hr class="mt-2">
     </div>
     <div class="row">
-      <% @post.items.each_with_index do |item, index| %>
-        <div class="col-2 mt-auto">
-          <%= index + 1 %>
-        </div>
-        <div class="col-5 mt-auto">
-          <%= link_to item.name, post_item_path(item.post_id, item.id) %>
-          <%#= link_to item.name, post_item_path(item.post_id, item.id, activation_id: item.activation_id) %>
-        </div>
-        <div class="col-3 mt-auto">
-          <% if item.item_got_user.nil? && !item.lose? %>
-            <span class="text-success fw-bold"><%= icon("circle") %></span>
-          <% elsif item.lose? %>
-            <span class="fw-bold"><%= icon("dash-lg") %></span>
-          <% else %>
-            <span class="text-danger fw-bold"><%= icon("x") %></span>
-          <% end %>
-        </div>
-        <div class="col-2 d-flex justify-content-end">
-          <%= link_to icon("trash"), post_item_path(item.post_id, item.id) , class: "text-danger fw-bold", data: { turbo_method: :delete} %>
-        </div>
-        <hr class="mt-2" style="border: 1px solid #ccc">
+      <% @items.each_with_index do |item, index| %>
+        <!-- 「ハズレ」を非表示にする -->
+        <% if !item.lose? %>
+          <!-- No. -->
+          <div class="col-2 mt-auto">
+            <%= index + 1 %>
+            <%#= item.lose? ? icon("dash-lg") : item.id %>
+          </div>
+          <!-- アイテム名 -->
+          <div class="col-7 mt-auto">
+            <%= link_to item.name, post_item_path(item.post_id, item.id) %>
+            <%#= link_to item.name, post_item_path(item.post_id, item.id, activation_id: item.activation_id) %>
+          </div>
+          <!-- 在庫 -->
+          <div class="col-3 mt-auto">
+            <% if item.item_got_user.nil? && !item.lose? %>
+              <span class="text-success fw-bold"><%= icon("circle") %></span>
+            <% elsif item.lose? %>
+              <span class="fw-bold"><%= icon("dash-lg") %></span>
+            <% else %>
+              <span class="text-danger fw-bold"><%= icon("x") %></span>
+            <% end %>
+          </div>
+          <hr class="mt-2" style="border: 1px solid #ccc">
+        <% end %>
       <% end %>
     </div>
 
@@ -74,17 +104,26 @@
 </div>
 
 <div class="mb-5 text-center">
-  <%= link_to "全ての景品取得状況をリセットする", activation_reset_all_post_path(@post), class: "btn__basic__l" %>
+  <a class="btn__basic__l" href="#" data-bs-toggle="modal" data-bs-target="#itemReset">アイテムの在庫状況をリセットする</a>
+  <%#= link_to "アイテムの在庫をリセットする", activation_reset_post_path(@post), class: "btn__basic__l" %>
 </div>
 
-<div>
-  <%= link_to "Edit this post", edit_post_path(@post) %> |
-  <%= link_to "Back to posts", posts_path %>
-  <%= button_to "Destroy this post", @post, method: :delete %>
-</div>
 
-<hr>
-
-<div class="mb-5 text-center">
-  <%= link_to icon_with_text("trash", "イベントを削除する"), @post, class: "btn__basic__l btn__red", data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？"} %>
+<!-- Modal -->
+<div class="modal fade" id="itemReset" tabindex="-1" aria-labelledby="itemResetLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="itemResetLabel">確認</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        本当にリセットしますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        <%= link_to "リセット", activation_reset_post_path(@post), class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
 </div>

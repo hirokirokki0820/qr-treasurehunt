@@ -10,8 +10,8 @@ class PostsController < ApplicationController
 
   # GET /posts/1 or /posts/1.json
   def show
-    # @search = @post.items.ransack(params[:q])
-    # @items = @search.result.page(params[:id])
+    @search = @post.items.ransack(params[:q])
+    @items = @search.result
   end
 
   # GET /posts/new
