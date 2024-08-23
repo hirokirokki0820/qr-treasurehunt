@@ -1,11 +1,9 @@
-<% content_for :title, "New post" %>
-
-<h1>New post</h1>
+<h1>新規イベント</h1>
 
 <%= render "form", post: @post %>
 
 <br>
 
-<div>
-  <%= link_to "Back to posts", posts_path %>
+<div class="mt-2">
+  <%= link_to "キャンセル", current_user, class: "btn btn-secondary" %>
 </div>

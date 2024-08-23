@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[ show edit update destroy show_qrcodes activation_reset ]
+  before_action :set_post, only: %i[ show edit update destroy show_qrcodes activation_reset_all ]
   before_action :require_same_user, only: %i[ show edit update destroy ]
   before_action :require_user, only: %i[ index ]
 
@@ -10,6 +10,8 @@ class PostsController < ApplicationController
 
   # GET /posts/1 or /posts/1.json
   def show
+    # @search = @post.items.ransack(params[:q])
+    # @items = @search.result.page(params[:id])
   end
 
   # GET /posts/new
@@ -26,7 +28,7 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user = current_user
     if @post.save
-      redirect_to post_url(@post), notice: "Post was successfully created."
+      redirect_to post_url(@post), notice: "新規イベントが作成されました。"
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,7 +37,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
     if @post.update(post_params)
-      redirect_to post_url(@post), notice: "Post was successfully updated."
+      redirect_to post_url(@post), notice: "イベント名が更新されました。"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,21 +46,26 @@ class PostsController < ApplicationController
   # DELETE /posts/1 or /posts/1.json
   def destroy
     @post.destroy!
-    redirect_to posts_url, notice: "Post was successfully destroyed."
+    redirect_to posts_url, notice: "イベントが削除されました。"
   end
 
   # QRコードを表示・印刷する
   def show_qrcodes
   end
 
-  # 景品の取得状態をリセットする
-  def activation_reset
+  # 全ての景品の取得状態をリセットする
+  def activation_reset_all
     @post.items.each do |item|
-      if !item.activated?
+      if !item.activated? && !item.lose?
         item.update_attribute(:activated, true)
       end
     end
     redirect_to @post, notice: "景品の在庫状況がリセットされました。"
+  end
+
+  # 選択した景品の取得状況をリセットする
+  def activation_reset
+
   end
 
   private

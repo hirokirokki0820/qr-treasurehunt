@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :items
     member do
       get "show_qrcodes"
-      get "activation_reset"
+      get "activation_reset_all"
     end
     resources :items do
       member do

@@ -1,15 +1,53 @@
 <div class="mb-3">
-  <h2><%= @user.name %>さんの投稿一覧</h2>
-  <%#= render @user.posts %>
-  <% @user.posts.each do |post| %>
-    <ul>
-      <li><%= link_to post.title, post %></li>
-    </ul>
-  <% end %>
+  <h2><%= @user.name %>さんのイベント一覧</h2>
 </div>
 
-<div class="mb-3">
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
-  <%= button_to "Destroy this user", @user, method: :delete %>
+<!-- 一覧 -->
+<div class="card shadow mt-3 mb-5">
+  <div class="card-header">
+    <%= icon_with_text("table", "一覧") %>
+  </div>
+
+  <div class="card-body mx-3">
+    <%= link_to icon_with_text("plus-circle", "イベントを追加"),
+                    new_post_path,
+                    class: "btn btn-success d-block mb-2"
+    %>
+    <div class="row py-2">
+      <div class="col-2 mt-auto fw-bold">
+        No.
+      </div>
+      <div class="col-5 mt-auto fw-bold">
+        イベント名
+      </div>
+      <div class="col-5 d-flex fw-bold justify-content-end">
+        イベントの編集
+      </div>
+      <hr class="mt-2">
+    </div>
+    <div class="row">
+      <% @user.posts.each_with_index do |post, index| %>
+        <div class="col-2 mt-auto">
+          <%= index + 1 %>
+        </div>
+        <div class="col-5 mt-auto">
+          <%= link_to post.title, post %>
+        </div>
+        <div class="col-5 d-flex justify-content-end">
+          <%= link_to icon_with_text("pencil-square", "編集"), edit_post_path(post) , class: "btn btn-outline-primary mx-2" %>
+          <%#= link_to icon("trash"), post , class: "btn btn-outline-danger", data: { turbo_method: :delete} %>
+        </div>
+        <hr class="mt-2" style="border: 1px solid #ccc">
+      <% end %>
+    </div>
+
+    <!-- <div class="d-flex justify-content-end mt-3">
+      <%#= paginate @cats %>
+    </div> -->
+  </div>
+</div>
+
+<hr>
+<div class="mb-3 text-center">
+  <%= link_to "ユーザー情報を編集する", edit_user_path(@user), class: "btn__basic__large btn__green"%>
 </div>

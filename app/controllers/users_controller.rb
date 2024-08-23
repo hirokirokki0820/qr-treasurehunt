@@ -45,7 +45,7 @@ class UsersController < ApplicationController
   # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy
-    redirect_to root_path, notice: "アカウントが削除されました。"
+    redirect_to root_path, notice: "アカウントが削除されました。", status: :see_other
   end
 
   def guest_login

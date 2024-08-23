@@ -1,6 +1,4 @@
-<% content_for :title, "Editing post" %>
-
-<h1>Editing post</h1>
+<h1>イベントの編集</h1>
 
 <%= render "form", post: @post %>
 
@@ -8,5 +6,5 @@
 
 <div>
   <%= link_to "Show this post", @post %> |
-  <%= link_to "Back to posts", posts_path %>
+  <%= link_to "キャンセル", current_user, class: "btn btn-secondary" %>
 </div>

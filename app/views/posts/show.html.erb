@@ -1,29 +1,89 @@
 <div class="mb-3">
+  <%= link_to icon_with_text("box-arrow-in-left", "イベント一覧に戻る"), current_user, class: "" %>
+</div>
+
+<div class="mb-3">
   <h2><%= @post.title %></h2>
 </div>
-  <% @post.items.each do |item| %>
-  <div class="mb-3">
-    <ul>
-      <%#= link_to item.name, edit_post_item_path(item.post_id, item.id) %>
-      <li><%= link_to item.name, post_item_path(item.post_id, item.id) %></li>
-    </ul>
+
+<!-- 一覧 -->
+<div class="card shadow mt-3 mb-5">
+  <div class="card-header">
+    <%= icon_with_text("table", "一覧") %>
   </div>
-<% end %>
 
-<div class="mb-3">
->> <%= link_to "アイテムを追加する", new_post_item_path(@post) %>
+  <div class="card-body mx-3">
+    <%= link_to icon_with_text("plus-circle", "アイテムを追加"),
+                    new_post_item_path(@post),
+                    class: "btn btn-success d-block mb-2"
+    %>
+    <div class="text-center">
+      <%#= link_to icon_with_text("plus-circle", "アイテムを追加"),
+                    new_post_item_path(@post),
+                    class: "btn__basic__large btn__green mb-2"
+    %>
+    </div>
+    <div class="row py-2">
+      <div class="col-2 mt-auto fw-bold">
+        No.
+      </div>
+      <div class="col-5 mt-auto fw-bold">
+        景品名
+      </div>
+      <div class="col-3 mt-auto fw-bold">
+        状況
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+
+      </div>
+      <hr class="mt-2">
+    </div>
+    <div class="row">
+      <% @post.items.each_with_index do |item, index| %>
+        <div class="col-2 mt-auto">
+          <%= index + 1 %>
+        </div>
+        <div class="col-5 mt-auto">
+          <%= link_to item.name, post_item_path(item.post_id, item.id) %>
+        </div>
+        <div class="col-3 mt-auto">
+          <% if item.activated? %>
+            <span class="text-success fw-bold"><%= icon("circle") %></span>
+          <% elsif item.lose? %>
+            <span class="fw-bold"><%= icon("dash-lg") %></span>
+          <% else %>
+            <span class="text-danger fw-bold"><%= icon("x") %></span>
+          <% end %>
+        </div>
+        <div class="col-2 d-flex justify-content-end">
+          <%= link_to icon("trash"), post_item_path(item.post_id, item.id) , class: "text-danger fw-bold", data: { turbo_method: :delete} %>
+        </div>
+        <hr class="mt-2" style="border: 1px solid #ccc">
+      <% end %>
+    </div>
+
+    <!-- <div class="d-flex justify-content-end mt-3">
+      <%#= paginate @cats %>
+    </div> -->
+  </div>
 </div>
 
-<div class="mb-3">
->> <%= link_to "QRコードを表示・印刷する", show_qrcodes_post_path(@post) %>
+<div class="mb-3 text-center">
+  <%= link_to icon_with_text("qr-code", "QRコードを表示・印刷する"), show_qrcodes_post_path(@post), class: "btn__basic__large btn__green" %>
 </div>
 
-<div class="mb-5">
-<%= link_to "景品の取得をリセットする", activation_reset_post_path(@post) %>
+<div class="mb-5 text-center">
+  <%= link_to "全ての景品取得状況をリセットする", activation_reset_all_post_path(@post), class: "btn__basic__large" %>
 </div>
 
 <div>
   <%= link_to "Edit this post", edit_post_path(@post) %> |
   <%= link_to "Back to posts", posts_path %>
   <%= button_to "Destroy this post", @post, method: :delete %>
+</div>
+
+<hr>
+
+<div class="mb-5 text-center">
+  <%= link_to icon_with_text("trash", "イベントを削除する"), @post, class: "btn__basic__large btn__red", data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？"} %>
 </div>
