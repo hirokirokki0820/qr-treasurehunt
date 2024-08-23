@@ -3,7 +3,13 @@ module ApplicationHelper
   require "rqrcode_png"
 
   def qrcode(url, size)
-    qrcode = RQRCode::QRCode.new(url)
+    if Rails.env.production?
+      # 本番環境のみの処理
+      qrcode = RQRCode::QRCode.new("https://qr-treasurehunt.kobapp.net#{url}")
+    elsif Rails.env.development?
+      # 開発環境のみの処理
+      qrcode = RQRCode::QRCode.new(url)
+    end
     svg = qrcode.as_svg(
       color: "000",
       shape_rendering: "crispEdges",
